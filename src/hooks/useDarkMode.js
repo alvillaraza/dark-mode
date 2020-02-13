@@ -1,24 +1,14 @@
-import {useEffect} from 'react';
-import LocalStorage, { useLocalStorage } from './useLocalStorage';
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
-export const useDarkMode = () => {
-    const [value, setValue] = useLocalStorage(enabled);
-    useEffect(
-        () => {
-          localStorage.setItem("value", initialValue);
-        },
-        [value]
-      );
-    
-      return (
-        <div>
-          <input
-            type="text"
-            onChange={e => {
-              setValue(e.target.value);
-            }}
-            value={key}
-          />
-        </div>
-      );
-}
+export const useDarkMode = initialValue => {
+  const [darkMode, setDarkMode] = useLocalStorage("dark-mode", initialValue);
+
+  useEffect(() => {
+    darkMode === true
+      ? document.body.classList.add("dark-mode")
+      : document.body.classList.remove("dark-mode");
+  });
+
+  return [darkMode, setDarkMode];
+};
