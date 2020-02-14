@@ -1,21 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-// BUG: Saves to localStorage, but page does not remember it.
+
 
 export const useLocalStorage = (key, initialValue) => {
-  const [storedValue, setStoredValue] = useState(
-    initialValue
+  const item = JSON.parse(window.localStorage.getItem(key));
+  const [storedValue, setStoredValue] = useState(item || initialValue);
+  // setStoredValue(true)
 
-    //   () => {
-    //   const item = window.localStorage.setItem(key, initialValue);
-    //   return item ? JSON.parse(item) : initialValue;
-    // }
-  );
+  //stores the value in localStorage
+  const setValue = (value) => {
+    window.localStorage.setItem(key, JSON.stringify(value))
+    //set the state
+    setStoredValue(value);
+  }
 
-  // const setStoredValue = initialValue => {
-  //   // setStoredValue(value);
-  //   // window.localStorage.setItem(key, JSON.stringify(value));
-  // };
-
-  return [storedValue, setStoredValue];
+  return [storedValue, setValue];
 };
